@@ -14,7 +14,6 @@ if (!empty($_POST)){
     $login->bindParam(':email',$_POST['email'],PDO::PARAM_STR_CHAR);
     $login->bindValue(':pw',sha1($_POST['password']));
     $login->execute();
-    //$login->execute(array($_POST['email']), sha1($_POST['password']));//sample
     $user = $login->fetch();
     if ($user){
       $_SESSION['id'] =$user['id'];
