@@ -225,8 +225,8 @@ if (isset($user)){
                 $btn_name=array("regist","新規登録する"); 
                 endif;
                 ?>
-                <button type="submit" name="<?php print($btn_name[0]);?>" onclick="return confirm('入力した項目を登録しますか？');"><?php print($btn_name[1]); ?></button>            
-                <button name="clear" onclick="return confirm('入力した項目をクリアしますか？')">入力クリア</button>
+                <button type="submit" name="<?php print($btn_name[0]);?>" onclick="javascript:return confirm('入力した項目を登録しますか？');"><?php print($btn_name[1]); ?></button>            
+                <button name="clear" onclick="javascript:return confirm('入力した項目をクリアしますか？')">入力クリア</button>
              </dd>
         </div>
     </dl>
