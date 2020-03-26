@@ -14,6 +14,7 @@ if (!empty($_POST)){
     $login->bindParam(':email',$_POST['email'],PDO::PARAM_STR_CHAR);
     $login->bindValue(':pw',sha1($_POST['password']));
     $login->execute();
+    //$login->execute(array($_POST['email']), sha1($_POST['password']));//sample
     $user = $login->fetch();
     if ($user){
       $_SESSION['id'] =$user['id'];
@@ -47,12 +48,13 @@ if($email ==''){
 </head>
 <body>
 <header>
+<div id=wrap>
   <div id="head">
     <h1>■ユーザーログイン</h1>
   </div>
   <div id="lead">
     <p>ユーザー登録手続きがまだの方はこちらから。</p>
-    <p>&raquo;<a href="join/">ユーザー登録手続きへ</a></p>
+    <p>&raquo;<a href="signup/">ユーザー登録手続きへ</a></p>
   </div>
   <hr size="20" noshade>
  </header> 
@@ -68,7 +70,7 @@ if($email ==''){
               <p class="error">＊メールアドレスとパスワードを入力してください。 </p>
             <?php endif; ?>
             <?php if($error['login'] === 'failed'): ?>
-              <p class="error">＊ログイン失敗！正しいログイン情報を入力してください。</p>
+              <p class="error" style="color: red;">＊ログイン失敗！正しいログイン情報を入力してください。</p>
             <?php endif; ?>
           <?php endif; ?>
         </dd>
@@ -94,5 +96,6 @@ if($email ==''){
     <hr size="20" noshade>
   </div>
 </footer> 
+</div>
 </body>
 </html>

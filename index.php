@@ -41,7 +41,7 @@ if(!empty($_POST)){
         }
     } else {
         if (isset($error) && $error['email'] ==='none'){
-            header('Location: /join/index.php');
+            header('Location: /signup/index.php');
             exit();
         }	
         echo('登録できませんでした。');   	
@@ -134,7 +134,7 @@ if (isset($user)){
     </div>
     <div style="text-align: center">
         <p>
-        <a href="logout.php">ログアウト</a>
+        <a href="logout.php">ログアウト&raquo;</a>
         </p>
     </div> 
     <hr size="20" noshade>
