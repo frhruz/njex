@@ -24,22 +24,21 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>ユーザー登録</title>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link rel="stylesheet" href="../../css/style.css" />
 </head>
 <body>
-<div id="wrap">
-<div id="head">
-<h1>ユーザー登録</h1>
-</div>
-
-<div id="content">
-<p>記入した内容を確認して、「登録する」ボタンをクリックしてください</p>
-<form action="" method="post">
+<header>
+	<h1>ユーザー登録</h1>
+</header>
+<mail>
+  <div id="content">
+  <p>記入した内容を確認して、「登録する」ボタンをクリックしてください</p>
+  <form action="" method="post">
 	<input type="hidden" name="action" value="submit" />
 	<dl>
 		<dt>ユーザー名</dt>
@@ -54,15 +53,13 @@
 		<dd>
 		【表示されません】
 		</dd>
-		<!--<dt>写真など</dt>
-		<dd>
-		</dd>
-		-->
 	</dl>
-	<div><a href="index.php?action=rewrite">&laquo;&nbsp;ユーザー登録情報修正</a> | <input type="submit" value="登録する" /></div>
-</form>
-</div>
-
-</div>
+		<a href="index.php?action=rewrite">&laquo;&nbsp;ユーザー登録情報修正</a> | <input type="submit" value="登録する" />
+	</div>
+  </form>
+</main>
+<footer>
+    <p style="text-align: center"> &copy 2020 NANZIYO</p>
+</footer> 
 </body>
 </html>

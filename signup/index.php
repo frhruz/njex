@@ -25,14 +25,14 @@
 	} 
 
 	if(empty($error)){
-		$_SESSION['signup ']=$_POST;
+		$_SESSION['signup']=$_POST;
 		header('Location: check.php');
 		exit();
 	}
  }
  if (!empty($_REQUEST)){
- 	if($_REQUEST['action'] == 'rewrite' && isset($_SESSION['signup '])){
-		$_POST = $_SESSION['signup '];
+ 	if($_REQUEST['action'] == 'rewrite' && isset($_SESSION['signup'])){
+		$_POST = $_SESSION['signup'];
  	}
  }
 ?>
@@ -40,22 +40,21 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>ユーザー登録</title>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link rel="stylesheet" href="../../css/style.css" />
 </head>
 <body>
-<div id="wrap">
-<div id="head">
-<h1>ユーザー登録</h1>
-</div>
-
-<div id="content">
-<p>次のフォームに必要事項をご記入ください。</p>
-<form action="" method="post" enctype="multipart/form-data">
+<header>
+	<h1>ユーザー登録</h1>
+</header>
+<main>
+  <div id="content">
+	<p>次のフォームに必要事項をご記入ください。</p>
+    <form action="" method="post" enctype="multipart/form-data">
 	<dl>
 		<dt>ユーザー名<span class="required">必須</span></dt>
 		<dd>
@@ -84,15 +83,13 @@
 				<p class="error">* パスワードを入力してください</p>
 			<?php endif; ?>	
 		</dd>
-		<!--
-		<dt>写真など</dt>
-		<dd>
-        	<input type="file" name="image" size="35" value="test"  />
-        </dd>
-		-->
 	</dl>
-	<div><input type="submit" value="入力内容を確認する" /></div>
-</form>
-</div>
+	<input type="submit" value="入力内容を確認する" />
+  </form>
+  </div>
+</main>
+<footer>
+    <p style="text-align: center"> &copy 2020 NANZIYO</p>
+</footer> 
 </body>
 </html>
