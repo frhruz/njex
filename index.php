@@ -44,7 +44,7 @@ if(!empty($_POST)){
             header('Location: /signup/index.php');
             exit();
         }	
-        echo('登録できませんでした。');   	
+       // echo('登録できませんでした。');   	
     }
     //Insert_database:
     if(isset($_REQUEST['regist'])){
@@ -104,33 +104,73 @@ if(!empty($_POST)){
         }
     }
     //Clear_POSTdata:
-    header('Location: index.php');
-    exit();
+    if (empty($_POST["selectcont"])){
+        header('Location: index.php');
+        exit();
+    } 
 }
 //Show_Data:
+// if (isset($user)){
+//     $username=(string)$user['name'];
+//     $login = $db->prepare('SELECT  * FROM j_dailyreport WHERE regist_user ='. $id .' AND del_flg = 0 ORDER BY consulting_date DESC, consulting_timezone DESC, jnl_no DESC ');
+//     $login->execute();
+//     $rows = $login->fetchAll();
+// }
 if (isset($user)){
-    $username=(string)$user['name'];
-    $login = $db->prepare('SELECT  * FROM j_dailyreport WHERE regist_user ='. $id .' AND del_flg = 0 ORDER BY consulting_date DESC, consulting_timezone DESC, jnl_no DESC ');
-    $login->execute();
-    $rows = $login->fetchAll();
-}
+    define("FLD_1","title");
+    define("FLD_2","content");
+    define("FLD_3","solution");
+    define("FLD_4","remarks");
+
+    $qry=$_REQUEST['selectcont'];
+    // $qry=filter_input(INPUT_POST ,"selectcont");
+    $q_str=htmlspecialchars($qry);
+    $q_str1=htmlspecialchars(mb_convert_kana(trim($qry),'rn'));//全角英数文字→半角変換
+    // $match1 ='<span style="color : blue; background-color:lightskyblue;">'.$q_str1.'</span>';
+ 
+    //SQL select_str	
+	if ($q_str1 === ""){
+        $sel = "SELECT  * FROM j_dailyreport WHERE regist_user =". $id ." AND del_flg = 0 ORDER BY consulting_date DESC, consulting_timezone DESC, jnl_no DESC";      
+    }else{
+        $sel="SELECT * FROM j_dailyreport WHERE (";
+        $sel=$sel.FLD_1." Like '%".$q_str1. "%' OR ".FLD_2." like '%".$q_str1."%' OR ".FLD_3." like '%".$q_str1."%' OR ".FLD_4." like '%".$q_str1."%')";
+        $sel=$sel." AND regist_user =". $id ." AND del_flg = 0 ORDER BY consulting_date DESC, consulting_timezone DESC, jnl_no DESC";
+    }
+	
+    // Show_data:
+    try {  
+        $username=(string)$user['name'];
+        $stmt = $db->query($sel);
+        $rows = $stmt->fetchAll();
+        $stmt=null;
+        //unset($db);//close Database
+        } catch (PDOException $e) {
+        die('Error: ' . $e->getMessage());
+        }
+    }
 ?>
 
 <!doctype html>
 <html lang="ja">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="日報キーワード検索"/>
+    <meta charset="utf-8">
+    <meta name="description" content="日報キーワード検索"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
 <title>業務日報Web版</title>
 </head>
+
 <body>
-<header>
-    <h1 class="font-weight-normal">■業務日報Web版</h1>  
+  <header>
+    <h4 class="font-weight-normal">■業務日報Web版</h4>  
     <div>  
         <p>ログインユーザー: <?php print(htmlspecialchars($user['name'],ENT_QUOTES)); ?> </p> 
         <p>Email: <?php print(htmlspecialchars($user['email'],ENT_QUOTES)); ?> </p>
+        <br>
+        <p>
+            <?php print(htmlspecialchars($user['name'],ENT_QUOTES)); ?>さん、こんにちは。本日も無理なく続けていきましょう。
+        </p>
     </div>
     <div style="text-align: center">
         <p>
@@ -138,37 +178,122 @@ if (isset($user)){
         </p>
     </div> 
     <hr size="20" noshade>
-</header>
-<main>
-    <div class="content">     
+  </header>
+
+  <main>
+  <div class="content">
+     <h4>■業務日報登録データ表示</h4>
+     <form action="" method="post">
+         <p>◆登録データ抽出（あいまい検索可）　
+                <input type="text" name="selectcont"  size="30" value="<?php print($_REQUEST['selectcont']); ?>"/>
+                <button type="submit" name="select">レコード抽出</button> 
+                <input type="reset" value="クリア" onclick="javascript:return confirm('検索項目をクリアしますか？')" >                    
+         </p>
+    </form>    
+    <div class="table">
+      <?php if (isset($rows)) {  ?>
+    　<form action="" method="get">
+      <table class='table'>
+        <thead style="width: device-width;">
+        <tr>
+            <th>NO</th>
+            <th style="width: 120px;">活動日</th>
+            <th>時間帯</th>
+            <th>タイトル</th>
+            <th>仕事内容</th>
+            <th>対応内容</th>
+            <th>備考</th>
+            <th>データ更新日時</th>
+            <th>編集</th>
+        </tr>                   
+        </thead>
+        <?php foreach ($rows as $row){ ?>
+            <?php $clm0 = htmlspecialchars($row['jnl_no']); ?> 
+            <?php $clm1 = htmlspecialchars($row['consulting_date']); ?> 
+            <?php $clm2 = htmlspecialchars($row['consulting_timezone']); ?>
+            <?php if(mb_strlen($row['title']) > 20): ?>
+                <?php $clm3 = htmlspecialchars(mb_substr($row['title'],0,20))."…"; ?>
+            <?php else: ?>
+                <?php $clm3 = htmlspecialchars($row['title']); ?>
+            <?php endif; ?>
+            <?php if(mb_strlen($row['content']) > 14): ?>
+                <?php $clm4 = htmlspecialchars(mb_substr($row['content'],0,14)."…"); ?>
+            <?php else: ?>
+                <?php $clm4 = htmlspecialchars($row['content']); ?>
+            <?php endif; ?>
+            <?php if(mb_strlen($row['solution']) > 14): ?>
+                <?php $clm5 = htmlspecialchars(mb_substr($row['solution'],0,14)."…"); ?>              
+            <?php else: ?>
+                <?php $clm5 = htmlspecialchars($row['solution']); ?>
+            <?php endif; ?>
+            <?php if(mb_strlen($row['remarks']) > 14): ?>
+                <?php $clm6 = htmlspecialchars(mb_substr($row['remarks'],0,14)."…"); ?>
+            <?php else: ?>
+                <?php $clm6 = htmlspecialchars($row['remarks']); ?>
+            <?php endif; ?>
+            <?php $clm7 = htmlspecialchars($row['schedule_date']); ?>
+            <?php $clm8 = htmlspecialchars($row['update_time']); ?>
+            <tbody>
+            <?php if(isset($edt_jnlno) && $clm0 == $edt_jnlno): ?>
+                <tr bgcolor="#cccccc">
+            <?php else: ?>
+                <tr>
+            <?php endif; ?>
+                <td><?php echo $clm0; ?></td>
+                <td><?php echo $clm1; ?></td>
+                <td><?php echo $clm2; ?></td>
+                <td><?php echo $clm3; ?></td>     
+                <td><?php echo nl2br($clm4); ?></td>
+                <td><?php echo nl2br($clm5); ?></td> 
+                <td><?php echo nl2br($clm6); ?></td>
+                <td><?php echo nl2br($clm8); ?></td>
+                <td>      
+                    <a href="index.php?jnl_no=<?php print(htmlspecialchars($clm0));?>&selectcont=<?php print($_REQUEST['selectcont']);?>&edit=true" style="color: blue;">編集</a>  
+                </td>
+            </tr>
+            </tbody>
+        <?php } ?>
+        </table>
+        <?php } else { ?>
+        <p>None</p> 
+        <?php } ?>
+      </table>
+      </form>
+     </div> <!-- table -->
+     <hr size="20" noshade>
+    </div>  <!-- content -->
+    
+    <div class="hidden_box">
+    <label for="label1">業務日報入力フォームの表示切替え</label>
+    <input type="checkbox" name="label_click" id="label1"/>
+     <div class="hidden_show">
+    　<form action="" method="post">
         <?php if (isset($edt_jnlno)): ?>
-            <h3>■業務日報データ編集</h3>
+            <h4>■業務日報データ編集</h4>
             <p>
-            <?php print(htmlspecialchars($user['name'],ENT_QUOTES)); ?>さん、選択内容の修正をおこなってからご登録ください。
+                <?php print(htmlspecialchars($user['name'],ENT_QUOTES)); ?>さん、選択内容の修正をおこなってからご登録ください。
             </p>
         <?php else: ?>
-            <h3>■業務日報データ登録</h3>
+            <h4>■業務日報データ登録</h4>
             <p>
-            <?php print(htmlspecialchars($user['name'],ENT_QUOTES)); ?>さん、こんにちは。本日の仕事内容をご登録ください。
+                <?php print(htmlspecialchars($user['name'],ENT_QUOTES)); ?>さん、本日の仕事内容をご登録ください。
             </p>
         <?php endif; ?>
-
-    <form action="" method="post">
+  
       <dl>
         <?php if (isset($edt_jnlno)): ?>
-        <dt>◆ジャーナルNO. <?php print($jnl_data['jnl_no']); $_POST['jnl_no']=$edt_jnlno;?></dt>
-            <dd>
-            </dd>
-        <br>
+         <dt>◆ジャーナルNO. <?php print($jnl_data['jnl_no']); $_POST['jnl_no']=$edt_jnlno;?></dt>
+         <dd></dd>  
         <?php endif; ?>
+        <br>
         <dt>◆対応日と時間帯</dt>
             <dd>
             <?php if (isset($edt_jnlno)): ?>
                 <input type="date" name="consulting_date" value="<?php print($jnl_data['consulting_date']);?>"> 
-                <input type="text" name="consulting_timezone" value="<?php print($jnl_data['consulting_timezone']);?>"></textarea>
+                <input type="text" name="consulting_timezone" value="<?php print($jnl_data['consulting_timezone']);?>">
             <?php else: ?>
                 <input type="date" name="consulting_date" value="<?php echo date('Y-m-d');?>"> 
-                <input type="text" name="consulting_timezone" value="<?php echo $dte->format('H:00').'-'.$dte1h->format('H:00');?>"></textarea>
+                <input type="text" name="consulting_timezone" value="<?php echo $dte->format('H:00').'-'.$dte1h->format('H:00');?>">
             <?php endif; ?>
             </dd>
         <dt>◆タイトル（128文字迄）</dt>
@@ -214,102 +339,33 @@ if (isset($user)){
             <dd>      
                 <input type="hidden" name="jnl_no" value="<?php if(isset($edt_jnlno)){print($edt_jnlno);}?>" />
             </dd>    
-    </dl>
         <div class="submit">
-        <dt></dt>
+          <dt></dt>
             <dd> 
                 <?php 
-                if (isset($edt_jnlno)):
-                $btn_name=array("update","更新登録する");    
-                else:
-                $btn_name=array("regist","新規登録する"); 
-                endif;
+                  if (isset($edt_jnlno)):
+                    $btn_name=array("update","更新登録する");    
+                  else:
+                    $btn_name=array("regist","新規登録する"); 
+                  endif;
                 ?>
                 <button type="submit" name="<?php print($btn_name[0]);?>" onclick="javascript:return confirm('入力した項目を登録しますか？');"><?php print($btn_name[1]); ?></button>            
                 <button name="clear" onclick="javascript:return confirm('入力した項目をクリアしますか？')">入力クリア</button>
-             </dd>
+            </dd>
         </div>
-    </dl>
-    <br>  
-    </form>
-    <hr size="20" noshade>
-    </div>
-
-    <div class="table">   
-    <h3>■業務日報登録データ表示</h3>
-    <?php if (isset($rows)) {  ?>
-    <table class='table' border=1 table-striped>
-        <thead>
-        <tr>
-            <th>NO</th>
-            <th>対応日</th>
-            <th>時間帯</th>
-            <th>タイトル</th>
-            <th>仕事内容</th>
-            <th>備考</th>
-            <th>データ更新日時</th>
-            <th>編集</th>
-        </tr>                   
-        </thead>
-        <?php foreach ($rows as $row){ ?>
-            <?php $clm0 = htmlspecialchars($row['jnl_no']); ?> 
-            <?php $clm1 = htmlspecialchars($row['consulting_date']); ?> 
-            <?php $clm2 = htmlspecialchars($row['consulting_timezone']); ?>
-            <?php if(mb_strlen($row['title']) > 20): ?>
-                <?php $clm3 = htmlspecialchars(mb_substr($row['title'],0,20))."…"; ?>
-            <?php else: ?>
-                <?php $clm3 = htmlspecialchars($row['title']); ?>
-            <?php endif; ?>
-            <?php if(mb_strlen($row['content']) > 14): ?>
-                <?php $clm4 = htmlspecialchars(mb_substr($row['content'],0,14)."…"); ?>
-            <?php else: ?>
-                <?php $clm4 = htmlspecialchars($row['content']); ?>
-            <?php endif; ?>
-            <!-- <?php $clm5 = htmlspecialchars($row['solution']); ?> -->
-            <?php if(mb_strlen($row['remarks']) > 14): ?>
-                <?php $clm6 = htmlspecialchars(mb_substr($row['remarks'],0,14)."…"); ?>
-            <?php else: ?>
-                <?php $clm6 = htmlspecialchars($row['remarks']); ?>
-            <?php endif; ?>
-            <!-- <?php $clm7 = htmlspecialchars($row['schedule_date']); ?> -->
-            <?php $clm8 = htmlspecialchars($row['update_time']); ?>
-            <tbody>
-            <?php if(isset($edt_jnlno) && $clm0 == $edt_jnlno): ?>
-                <tr bgcolor="#cccccc">
-            <?php else: ?>
-                <tr>
-            <?php endif; ?>
-                <td><?php echo $clm0; ?></td>
-                <td><?php echo $clm1; ?></td>
-                <td><?php echo $clm2; ?></td>
-                <td><?php echo $clm3; ?></td>     
-                <td><?php echo nl2br($clm4); ?></td> 
-                <td><?php echo nl2br($clm6); ?></td>
-                <td><?php echo nl2br($clm8); ?></td>
-                <td><a href="index.php?jnl_no=<?php print(htmlspecialchars($clm0));?>" name="edit" style="color: blue;">編集</a> </td>
-            </tr>
-            </tbody>
-        <?php } ?>
-        </table>
-        <?php } else { ?>
-        <p>None</p>
-        <?php } ?>
-    </table>
-    <br>
-    </div>  
-    <div class="bottom" style="text-align: center">
-    <p>
-    <a href="#">▲ ページトップへ</a>
-    </p>
-    <hr size="20" noshade>
-    </div>
-    <pre>
-    <!-- ここにプログラムを記述します -->
-    </pre>
-</main>
-<footer>
-    <p style="text-align: center"> &copy NANZIYO 2020</p>
-    <hr size="20" noshade>
-</footer> 
+        </dl>
+      </form>
+　    <div class="bottom" style="text-align: center">
+      <p>
+        <a href="#">▲ ページトップへ</a>
+      </p>
+　    </div>
+    </div> <!-- hidden_show -->
+   </div> <!-- hidden_box -->
+   <hr size="20" noshade> 
+  </main>
+  <footer>
+    <p style="text-align: center"> &copy 2020 NANZIYO</p>
+  </footer> 
 </body> 
 </html>

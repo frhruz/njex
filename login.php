@@ -39,28 +39,30 @@ if($email ==''){
 }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="業務日報システムログイン"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> -->
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="../css/style.css" />
 <title>ユーザーログイン</title>
 </head>
 <body>
 <header>
-<div id=wrap>
-  <div id="head">
     <h1>■ユーザーログイン</h1>
-  </div>
-  <div id="lead">
-    <p>ユーザー登録手続きがまだの方はこちらから。</p>
-    <p>&raquo;<a href="signup/">ユーザー登録手続きへ</a></p>
-  </div>
+    <div id="lead">
+      <p>ユーザー登録手続きがまだの方はこちらから。</p>
+      <p>&raquo;<a href="signup/">ユーザー登録手続きへ</a></p>
+    </div>
   <hr size="20" noshade>
- </header> 
-  <div id="content">
-  <p>メールアドレスとパスワードを入力しログインしてください。</p>
-    <form action="" method="post">
+</header> 
+<div class="content">
+   <p style="text-align: center">メールアドレスとパスワードを入力しログインしてください。</p> 
+    <form action="" method="post" style="text-align: center">
       <dl>
         <dt>◆メールアドレス</dt>
         <dd>
@@ -81,21 +83,17 @@ if($email ==''){
         <br>
         <dt></dt>
         <dd>
-          <input type="checkbox" name="save" value="on" id="save"> ＊次回から自動的にログインする場合はチェックを入れてください。
+          <input type="checkbox" name="save" id="save" value="on" checked > 次回から自動的にログインする。
         </dd>
       </dl>
       <div>
         <input type="submit" value="ログインする" />
       </div>
     </form>
-  </div> 
   <hr size="20" noshade>
+</div> 
 <footer>
-　<div id="foot">
-    <p style="text-align: center"> &copy NANZIYO 2020</p>
-    <hr size="20" noshade>
-  </div>
+    <p style="text-align: center"> &copy 2020 NANZIYO</p>
 </footer> 
-</div>
 </body>
 </html>
