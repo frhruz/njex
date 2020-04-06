@@ -5,7 +5,7 @@ require('dbconn.php');
 $dte = new datetime();
 $dte1h = new datetime();;
 $dte1h -> add(DateInterval::createFromDateString('1 hour'));
-//Check_Login:
+//Check_signin:
 if(!empty($_SESSION) && isset($_SESSION['id'])){
     if(isset($_REQUEST['jnl_no'])){
         $edt_jnlno=$_REQUEST['jnl_no'];
@@ -15,13 +15,13 @@ if(!empty($_SESSION) && isset($_SESSION['id'])){
     if ($dte1dy > $dte){
         $_SESSION['datetime'] = $dte;
         $id =$_SESSION['id'];
-        $login = $db->prepare('SELECT * FROM m_user WHERE id =:id');
-        $login->bindParam(':id',$id,PDO::PARAM_INT);
-        $login->execute();
-        $user = $login->fetch();  
+        $signin = $db->prepare('SELECT * FROM m_user WHERE id =:id');
+        $signin->bindParam(':id',$id,PDO::PARAM_INT);
+        $signin->execute();
+        $user = $signin->fetch();  
     }
 } else {
-        header('Location: login.php');
+        header('Location: signin.php');
         exit();
 }
 //Show_editation_data:
@@ -112,9 +112,9 @@ if(!empty($_POST)){
 //Show_Data:
 // if (isset($user)){
 //     $username=(string)$user['name'];
-//     $login = $db->prepare('SELECT  * FROM j_dailyreport WHERE regist_user ='. $id .' AND del_flg = 0 ORDER BY consulting_date DESC, consulting_timezone DESC, jnl_no DESC ');
-//     $login->execute();
-//     $rows = $login->fetchAll();
+//     $signin = $db->prepare('SELECT  * FROM j_dailyreport WHERE regist_user ='. $id .' AND del_flg = 0 ORDER BY consulting_date DESC, consulting_timezone DESC, jnl_no DESC ');
+//     $signin->execute();
+//     $rows = $signin->fetchAll();
 // }
 if (isset($user)){
     define("FLD_1","title");
@@ -174,7 +174,8 @@ if (isset($user)){
     </div>
     <div style="text-align: center">
         <p>
-        <a href="logout.php">ログアウト&raquo;</a>
+            <a href="index.php" onclick="javascript:return confirm('ページリセットしますか？')">ページリセット&raquo;&emsp;</a>         
+            <a href="signin.php" onclick="javascript:return confirm('ログアウトしますか？');">ログアウト&raquo;</a>
         </p>
     </div> 
     <hr size="20" noshade>
@@ -184,11 +185,10 @@ if (isset($user)){
   <div class="content">
      <h4>■業務日報登録データ表示</h4>
      <form action="" method="post">
-         <p>◆登録データ抽出（あいまい検索可）　
+        <p>◆登録データ抽出（あいまい検索可）　
                 <input type="text" name="selectcont"  size="30" value="<?php print($_REQUEST['selectcont']); ?>"/>
                 <button type="submit" name="select">レコード抽出</button> 
-                <input type="reset" value="クリア" onclick="javascript:return confirm('検索項目をクリアしますか？')" >                    
-         </p>
+        </p>
     </form>    
     <div class="table">
       <?php if (isset($rows)) {  ?>
@@ -196,15 +196,15 @@ if (isset($user)){
       <table class='table'>
         <thead style="width: device-width;">
         <tr>
-            <th>NO</th>
-            <th style="width: 120px;">活動日</th>
-            <th>時間帯</th>
-            <th>タイトル</th>
-            <th>仕事内容</th>
-            <th>対応内容</th>
-            <th>備考</th>
-            <th>データ更新日時</th>
-            <th>編集</th>
+            <th style="font-weight: lighter;">NO</th>
+            <th style="width: 120px; font-weight: lighter;">活動日</th>
+            <th style="font-weight: lighter;">時間帯</th>
+            <th style="font-weight: lighter;">タイトル</th>
+            <th style="font-weight: lighter;">仕事内容</th>
+            <th style="font-weight: lighter;" >対応内容</th>
+            <th style="font-weight: lighter;">備考</th>
+            <th style="font-weight: lighter;">データ更新日時</th>
+            <th style="font-weight: lighter;">編集</th>
         </tr>                   
         </thead>
         <?php foreach ($rows as $row){ ?>
@@ -265,10 +265,10 @@ if (isset($user)){
     
     <div class="hidden_box">
     <label for="label1">業務日報入力フォームの表示切替え</label>
-    <input type="checkbox" name="label_click" id="label1"/>
-     <div class="hidden_show">
+    <input type="checkbox" name="label_click" id="label1" <?php if(isset($edt_jnlno)){print('checked=checked');} ?>" />
+    <div class="hidden_show">
     　<form action="" method="post">
-        <?php if (isset($edt_jnlno)): ?>
+        <?php if (isset($edt_jnlno)):?>
             <h4>■業務日報データ編集</h4>
             <p>
                 <?php print(htmlspecialchars($user['name'],ENT_QUOTES)); ?>さん、選択内容の修正をおこなってからご登録ください。
