@@ -1,0 +1,108 @@
+/* CSS for Dailyreport --NANZIYO*/
+header {
+  margin: auto;
+  text-align: center;
+  /* position: fixed; */
+  top: 0;
+  left: 0;
+  background-color:  #efefef;/*#7CA4D7*/
+} 
+
+header h1 {
+  font-size: 120%;
+  margin-top: 0 auto;
+}
+header h1 span {
+  display: block;
+}
+main {
+  margin-left: 100px;
+  padding: 30px;
+}
+main h2 {
+  font-size: 100%;
+  text-shadow: 1px 1px 3px #999;
+}
+main h2 img {
+  height: 1em;
+}
+hr {
+  border-color: #222559;/*#7CA4D7;*/
+}
+
+form {
+  margin-top: 50px;
+}
+
+th {
+ font-weight: lighter;
+}
+
+
+tbody tr{
+  cursor:pointer;
+}
+
+tbody tr:hover{
+  background-color:#EEF;
+}
+
+thead {
+  background-color:  #999; #7CA4D7
+  border-collapse: collapse;
+}
+
+div.content {
+  margin-right: auto;
+  margin-left : auto;
+}
+time {
+  color: #999;
+  font-size: 80%;
+}
+article {
+  margin-top: 30px;
+}
+
+/* CSS form_data */
+.form_data {
+  margin: 2em 0;
+  padding: 0;
+}
+
+.form_data label {
+  padding: 10px;
+  font-weight: bold;
+  border: solid 2px black;
+  cursor :pointer;
+}
+
+.form_data label:hover {
+  background: #EEF;
+}
+
+.form_data #label1 {
+  display: none;
+}
+
+.form_data .close_n_show {
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: 0.8s;
+}
+
+.form_data input:checked ~ .close_n_show {
+  padding: 10px 0;
+  height: auto;
+  opacity: 1;
+}
+/* CSS form_data --EOL-- */
+
+input[type="search"] {
+  -webkit-appearance: searchfield;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
