@@ -135,8 +135,6 @@ if (isset($user)){
             <a class="nav-link" href="./signin.php" onclick="javascript:return confirm('サインアウトしますか？')">Sign out&raquo;</a>
         </li>
       </ul>
-    </div>
-    <div>
       <!-- Search record -->
       <form class="form-inline my-2 my-lg-0" action="" method="post" onsubmit="return false;">　
         <input class="form-control mr-sm-2 txtbox_search" type="search"  name="txtbox_search" placeholder="　データ抽出" aria-label="Search" value="<?php if(!empty($_REQUEST['txtbox_search'])){print($_REQUEST['txtbox_search']);} ?>">
