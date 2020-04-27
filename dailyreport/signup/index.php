@@ -100,7 +100,7 @@
     <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password. *" required value="<?php if (!empty($_POST)){print(htmlspecialchars($_POST['password'],ENT_QUOTES));}?>" >
 	<!-- <input type="password" name="password" size="10" maxlength="20" value="<?php print(htmlspecialchars($_POST['password'],ENT_QUOTES)); ?>" /> -->
 	<br>
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+	<button class="btn btn-lg btn-primary" type="submit">ユーザー登録:Sign up</button>
 	<p class="text-muted"> &copy 2020 NANZIYO</p>
   </form>
 </body>
