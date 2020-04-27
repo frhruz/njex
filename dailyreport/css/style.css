@@ -34,10 +34,16 @@ form {
   margin-top: 50px;
 }
 
-th {
- font-weight: lighter;
+thead tr th{
+  font-weight: lighter;
+  text-align: left;
 }
 
+thead {
+  background-color:  #999;
+  border-collapse: collapse;
+  width: device-width;
+}
 
 tbody tr{
   cursor:pointer;
@@ -47,9 +53,8 @@ tbody tr:hover{
   background-color:#EEF;
 }
 
-thead {
-  background-color:  #999; #7CA4D7
-  border-collapse: collapse;
+tbody td {
+  text-align: left;
 }
 
 div.content {
@@ -102,7 +107,12 @@ article {
 
 input[type="search"] {
   -webkit-appearance: searchfield;
+  margin-left: 0px;
+  padding-left: 0px;
 }
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
+}
+.form_data button{
+  background-color: #222559;/*#490080;*/  
 }
