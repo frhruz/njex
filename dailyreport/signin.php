@@ -2,8 +2,7 @@
 session_start();
 require_once('dbconn.php');
 
-
-if (!isset($_REQUEST['action']) and ($_REQUEST['action'] !== 'new')){
+if (!empty($_REQUEST) and ($_REQUEST['action'] !== 'new')){
 
   $dte = new datetime();
   $email='';
@@ -66,10 +65,11 @@ if($email ==''){
 <title>業務日報システム ユーザーログイン</title>
 </head>
 <body class="text-center">
+<div class="pw-form pw-form-container">
   <form action="" method="post" style="text-align: center" class="form-signin">
     <img class="mb-4" src="../img/n.png" alt="9chat-e.radio:trial:NANZIYO" width="72" height="72"> 
     <h1 class="h3 mb-3 font-weight-normal">Please sign in<br>to the DailyReport System</h1>
-    <p class="mt-5 mb-3 text-muted">&raquo;&nbsp;ユーザー登録がまだの方は<a href="signup/">こちら</a>から<br>
+    <p class="mt-5 mb-3 text-muted">※ユーザー登録はこちらへ&nbsp;<a href="signup/">&raquo;SignUp</a><br>
      <?php if(!empty($error)): ?>
       <?php if($error['signin'] === 'blank'): ?>
         <p class="error">Please Enter your Email Address and password!!</p>
@@ -79,20 +79,39 @@ if($email ==''){
         <?php endif; ?>
       <?php endif; ?>
     </p>
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus value="<?php print(htmlspecialchars($email,ENT_QUOTES)); ?>" >
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required value="<?php if (!empty($_POST)){print(htmlspecialchars($_POST['password'],ENT_QUOTES));}?>" >
-    <div class="checkbox mb-3">
-    <label>
-      <input type="checkbox" name="save" value="on" checked="checked"> Remember me, Signin Info.
-    </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <div> 
-      <p class="mt-3 text-muted"> &copy 2020 NANZIYO</p>  
-    </div>
-  </form>
     
+      <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus value="<?php if(!empty($email)){print(htmlspecialchars($email,ENT_QUOTES));} ?>" >
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" placeholder="Password" id="inputPassword" name="password" class="form-control" required value="<?php if (!empty($_POST)){print(htmlspecialchars($_POST['password'],ENT_QUOTES));}?>">
+        <!-- <span class="field-icon"> -->
+          <!-- <i toggle="#password-field" class="mdi mdi-eye toggle-password"></i> -->
+        <!-- </span> -->
+      <!-- <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required value="<?php if (!empty($_POST)){print(htmlspecialchars($_POST['password'],ENT_QUOTES));}?>"> -->
+    <p class="checkbox mb-3">
+      <!-- <label class="checkbox mb-3"> -->
+        <input type="checkbox" name="save" value="on" checked="checked"> Remember me, Signin Info.
+      <!-- </label> -->
+    </p>
+    <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+    <p class="mt-3 text-muted"> &copy 2020 NANZIYO</p>  
+  </form>
+  </div>
+  <script>
+  // パスワードの表示・非表示切替
+  $(".toggle-password").click(function() {
+  // iconの切り替え
+  $(this).toggleClass("mdi-eye mdi-eye-off");
+  
+  // 入力フォームの取得
+  var input = $(this).parent().prev("input");
+  // type切替
+  if (input.attr("type") == "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+  });
+  </script>
 </body>
 </html>

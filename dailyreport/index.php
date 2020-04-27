@@ -89,47 +89,60 @@ if (isset($user)){
         text-anchor: middle;
       }
 
-      table td a.widelink {
+      /* table td a.widelink {
         text-decoration: none;
         color: blue;
         display: block;
         width: 100%;
         height: 100%;
-      }
+      } */
 
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
         }
       }
+
+      img.logo-icon{
+        width: 1.08em;
+        height: 1.08em;
+        /* width: 21.5px; */
+        /* height: 21.5px; */
+        vertical-align: text-top;
+      }
+
     </style>
     <link rel="stylesheet" type="text/css" href="./css/starter_bootstrap/starter-template.css">
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <script src="./css/starter_bootstrap/jquery-3.3.1.slim.min.js"></script>
     <script src="./css/starter_bootstrap/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="./img/logo-trial.png" type="image/png">
 </head>
 <body> 
   <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <!-- <a class="navbar-brand" href="#" onclick="javascript:confirm('ページリセットしますか？');">業務日報Web版&raquo;</a> -->
-    test: <a class="navbar-brand" href="index.php" onclick="javascript:var ret; ret=confirm('ページリセットしますか？'); if(ret){window.location.reload(true);}">業務日報Web版&raquo;</a>
+    <a class="navbar-brand" href="./index.php" onclick="javascript:confirm('ページリセットしますか？');">
+    <img src="./img/logo-trial.png" type="image/png" class="logo-icon">&nbsp;業務日報Web版&raquo;</a>
+    <!-- <a class="navbar-brand" href="./index.php" onclick="javascript:var ret; ret=confirm('ページリセットしますか？'); if(ret){window.location.reload(true);}">業務日報Web版&raquo;</a> -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
-      <li class="nav-item"><!--test: <li class="nav-item active"> -->
-        <a class="nav-link" href="http://9chat-e.mynt.work/" target="_blank">9Chat-e.Radio Site&raquo;</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="./signin.php" onclick="javascript:return confirm('サインアウトしますか？')">Sign out&raquo;</a>
-      </li>
-    </ul>
+        <li class="nav-item"><!--test: <li class="nav-item active"> -->
+            <a class="nav-link" href="http://9chat-e.mynt.work/" target="_blank">9Chat-e.Radio.Site&raquo;</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="./signin.php" onclick="javascript:return confirm('サインアウトしますか？')">Sign out&raquo;</a>
+        </li>
+      </ul>
+    </div>
+    <div>
       <!-- Search record -->
       <form class="form-inline my-2 my-lg-0" action="" method="post" onsubmit="return false;">　
-        <input class="form-control mr-sm-2 txtbox_search" type="search"  name="txtbox_search" size="30" placeholder="Search(データあいまい検索)" aria-label="Search" value="<?php if(!empty($_REQUEST['txtbox_search'])){print($_REQUEST['txtbox_search']);} ?>">
+        <input class="form-control mr-sm-2 txtbox_search" type="search"  name="txtbox_search" placeholder="　データ抽出" aria-label="Search" value="<?php if(!empty($_REQUEST['txtbox_search'])){print($_REQUEST['txtbox_search']);} ?>">
         <input type="button" class="btn btn-secondary my-2 my-sm-0" onclick="submit();" value="Search!">
         <!--test: <button class="btn btn-secondary my-2 my-sm-0" type="submit" name="btn_search" >Search!</button>  --> 
-    </form>
+      </form>
     </div>
    </nav>
 
@@ -145,10 +158,10 @@ if (isset($user)){
     <?php print(htmlspecialchars($user['name'],ENT_QUOTES)); ?>さん、こんにちは。本日も無理なく続けていきましょう。<br> 
   </p>
     <?php if (isset($rows)) { ?>
-    　<form action="" method="get" style="margin:0 auto;">
+    　<form action="" method="get">
       <h5>■業務日報データ一覧</h5>
       <table class='table'>
-        <thead style="width: device-width;">
+        <thead>
           <tr>
             <th scope="col">[#]活動日</th>
             <th scope="col">時間帯</th>
@@ -274,7 +287,7 @@ if (isset($user)){
             <dt></dt>
             <dd> 
                 <?php if (!empty($edt_jnlno)): ?>      
-                    <input type="checkbox" name="del_flg" value=<?php if(!empty($edt_jnlno)){print("true");}?> id="del_flg" />＊登録内容を削除する場合はチェックしてください。
+                    <input type="checkbox" name="del_flg" value=<?php if(!empty($edt_jnlno)){print("true");}?> id="del_flg" />&emsp;※登録内容を削除する場合はチェックしてください。
                 <?php endif; ?>
             </dd>
             <dt></dt>
@@ -289,7 +302,7 @@ if (isset($user)){
                     else:
                         $btn_name=array("insert","新規登録する"); 
                     endif;?>
-                    <button type="submit" name="<?php print($btn_name[0]);?>" onclick="javascript:confirm('入力した項目を登録しますか？');"><?php print($btn_name[1]);?></button>     
+                    <button type="submit" class="btn tn-lg btn-primary" name="<?php print($btn_name[0]);?>" onclick="javascript:confirm('入力した項目を登録しますか？');"><?php print($btn_name[1]);?></button>     
                 </dd>
             </div>
         </dl>
