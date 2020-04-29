@@ -70,7 +70,7 @@ function exec_update_db(PDO $dbcon,array $update_post,string $edit_journalno,dat
         $stmt->bindParam(':consulting_timezone',$update_post['consulting_timezone'],PDO::PARAM_STR);
         $stmt->bindParam(':title',$update_post['title'],PDO::PARAM_STR);
         $stmt->bindParam(':content',$update_post['content'],PDO::PARAM_STR);
-        $stmt->bindParam(':solution',$update_postPOST['solution'],PDO::PARAM_STR);
+        $stmt->bindParam(':solution',$update_post['solution'],PDO::PARAM_STR);
         $stmt->bindParam(':remarks',$update_post['remarks'],PDO::PARAM_STR);
         $stmt->bindvalue(':update_time', $update_datetime->format('Y-m-d H:i:s'));
         $stmt->bindvalue(':update_user', $userid);
